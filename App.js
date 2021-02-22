@@ -33,7 +33,10 @@ import {launchCamera, launchImageLibrary} from 'react-native-image-picker';
 
 export default class App extends React.Component {
   state = {
-    photo : null
+    photo : null,
+    photo1 : null,
+    photo2 : null,
+    photo3 : null
   };
   handleChoosePhoto = () => {
     const options = {
@@ -46,52 +49,86 @@ export default class App extends React.Component {
       }
     });
   };
+  handleChoosePhoto1 = () => {
+    const options1 = {
+      noData: true
+    };
+      launchImageLibrary(options1, response1 => {
+      console.log("response", response1);
+      if (response1.uri) {
+        this.setState({ photo1: response1 });
+      }
+    });
+  };
+  handleChoosePhoto2 = () => {
+    const options1 = {
+      noData: true
+    };
+      launchImageLibrary(options1, response2 => {
+      console.log("response", response2);
+      if (response2.uri) {
+        this.setState({ photo2: response2 });
+      }
+    });
+  };
+  handleChoosePhoto3 = () => {
+    const options1 = {
+      noData: true
+    };
+      launchImageLibrary(options1, response3 => {
+      console.log("response", response3);
+      if (response3.uri) {
+        this.setState({ photo3: response3 });
+      }
+    });
+  };
 
   
   render(){
-    const {photo} = this.state;
+    const {photo,photo1,photo2,photo3} = this.state;
     return(
     <SafeAreaView>
-    <Header1/>
-    <ScrollView
-          style={styles.scrollView}>
-      <View style={styles.body}>
-      <View style={styles.sectionContainer}>
-      <Text style={styles.sectionTitle}>Choose Picture</Text>
-              <Text style={styles.sectionDescription}>
-                Choose Picture that contain with <Text style={styles.highlight}>Each Part of snake </Text>
-                and then go to Analyze. 
-              </Text>
-              <View><Text>     </Text></View>
-      <View style ={{flex: 1, alignItems: 'center', justifyContent : 'center' }}>
-        {photo && (
-          <Image
-              source= {{uri: photo.uri}}
-              style= {{width: 300, height: 300}}
-          />
-        )}
+      <Header1/>
+        <ScrollView
+            style={styles.scrollView}>
+          <View style={styles.body}>
+          <View style={styles.sectionContainer}>
+            <Text style={styles.sectionTitle}>Choose Picture</Text>
+                <Text style={styles.sectionDescription}>
+                  Choose Picture that contain with <Text style={styles.highlight}>Each Part of snake </Text>
+                  and then go to Analyze. 
+                </Text>
+                <View><Text>     </Text></View>
+          <View style ={{flex: 1, alignItems: 'center', justifyContent : 'center' }}>
+          {photo && (<Image source= {{uri: photo.uri}} style= {{width: 300, height: 300}} />)}
+        
         <Text style={styles.highlight1}>Body</Text>
         <Button
           title = "Choose Photo"
           onPress = {this.handleChoosePhoto}
         />
+        
         <View><Text>     </Text></View>
+        {photo1 && (<Image source= {{uri: photo1.uri}} style= {{width: 300, height: 300}} />)}
         <Text style={styles.highlight1}>Head</Text>
         <Button
           title = "Choose Photo"
-          onPress = {this.handleChoosePhoto}
+          onPress = {this.handleChoosePhoto1}
         />
+
         <View><Text>     </Text></View>
+        {photo2 && (<Image source= {{uri: photo2.uri}} style= {{width: 300, height: 300}} />)}
         <Text style={styles.highlight1}>Mid</Text>
         <Button
           title = "Choose Photo"
-          onPress = {this.handleChoosePhoto}
+          onPress = {this.handleChoosePhoto2}
         />
         <View><Text>     </Text></View>
+        {photo3 && (<Image source= {{uri: photo3.uri}} style= {{width: 300, height: 300}} />)}
         <Text style={styles.highlight1}>Tail</Text>
         <Button
           title = "Choose Photo"
-          onPress = {this.handleChoosePhoto}
+          onPress = {this.handleChoosePhoto3}
         />
       <View><Text>     </Text></View>
       <View><Text>     </Text></View>
