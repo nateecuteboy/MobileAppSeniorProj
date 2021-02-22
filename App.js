@@ -15,7 +15,8 @@ import {
   Text,
   StatusBar,
   Image,
-  Button
+  Button,
+  PermissionsAndroid
 } from 'react-native';
 
 import {
@@ -49,34 +50,109 @@ export default class App extends React.Component {
       }
     });
   };
+
+  handleTakePhoto = () => {
+    const options = {
+      noData: true
+    };
+    launchCamera(options, response => {
+      console.log("response", response);
+      if (response.uri) {
+        this.setState({ photo: response });
+      }
+    });
+  };
+
+    requestCameraPermission = async () => {
+    try {
+      const granted = await PermissionsAndroid.request(
+        PermissionsAndroid.PERMISSIONS.CAMERA,
+        {
+          title: "App Camera Permission",
+          message:"App needs access to your camera ",
+          buttonNeutral: "Ask Me Later",
+          buttonNegative: "Cancel",
+          buttonPositive: "OK"
+        }
+      );
+      if (granted === PermissionsAndroid.RESULTS.GRANTED) {
+        console.log("Camera permission given");
+      } else {
+        console.log("Camera permission denied");
+      }
+    } catch (err) {
+      console.warn(err);
+    }
+  };
+
+  
+
   handleChoosePhoto1 = () => {
     const options1 = {
       noData: true
     };
       launchImageLibrary(options1, response1 => {
-      console.log("response", response1);
+      console.log("response1", response1);
       if (response1.uri) {
         this.setState({ photo1: response1 });
       }
     });
   };
+
+  handleTakePhoto1 = () => {
+    const options1 = {
+      noData: true
+    };
+    launchCamera(options1, response1 => {
+      console.log("response1", response1);
+      if (response1.uri) {
+        this.setState({ photo1: response1 });
+      }
+    });
+  };
+
   handleChoosePhoto2 = () => {
     const options1 = {
       noData: true
     };
       launchImageLibrary(options1, response2 => {
-      console.log("response", response2);
+      console.log("response2", response2);
       if (response2.uri) {
         this.setState({ photo2: response2 });
       }
     });
   };
-  handleChoosePhoto3 = () => {
-    const options1 = {
+
+  handleTakePhoto2 = () => {
+    const options2 = {
       noData: true
     };
-      launchImageLibrary(options1, response3 => {
-      console.log("response", response3);
+    launchCamera(options2, response2 => {
+      console.log("response2", response2);
+      if (response2.uri) {
+        this.setState({ photo2: response2 });
+      }
+    });
+  };
+
+  handleChoosePhoto3 = () => {
+    const options3 = {
+      noData: true
+    };
+      launchImageLibrary(options3, response3 => {
+      console.log("response3", response3);
+      if (response3.uri) {
+        this.setState({ photo3: response3 });
+      }
+    });
+  };
+
+  handleTakePhoto3 = () => {
+    const options3 = {
+      noData: true
+    };
+    launchCamera(options3, response3 => {
+      console.log("response3", response3);
       if (response3.uri) {
         this.setState({ photo3: response3 });
       }
@@ -103,33 +179,70 @@ export default class App extends React.Component {
           {photo && (<Image source= {{uri: photo.uri}} style= {{width: 300, height: 300}} />)}
         
         <Text style={styles.highlight1}>Body</Text>
-        <Button
+
+        <View style={styles.fixToText}>
+        <Button 
           title = "Choose Photo"
           onPress = {this.handleChoosePhoto}
         />
+        <Button 
+          title = "Take Photo"
+          color="#f194ff"
+          onPress = {this.handleTakePhoto}
+        />
+        </View>
         
         <View><Text>     </Text></View>
         {photo1 && (<Image source= {{uri: photo1.uri}} style= {{width: 300, height: 300}} />)}
         <Text style={styles.highlight1}>Head</Text>
+        <View style={styles.fixToText}>
         <Button
           title = "Choose Photo"
           onPress = {this.handleChoosePhoto1}
         />
+        <Button 
+          title = "Take Photo"
+          color="#f194ff"
+          onPress = {this.handleTakePhoto1}
+        />
+        </View>
 
         <View><Text>     </Text></View>
         {photo2 && (<Image source= {{uri: photo2.uri}} style= {{width: 300, height: 300}} />)}
         <Text style={styles.highlight1}>Mid</Text>
+        <View style={styles.fixToText}>
         <Button
           title = "Choose Photo"
           onPress = {this.handleChoosePhoto2}
         />
+        <Button 
+          title = "Take Photo"
+          color="#f194ff"
+          onPress = {this.handleTakePhoto2}
+        />
+        </View>
         <View><Text>     </Text></View>
         {photo3 && (<Image source= {{uri: photo3.uri}} style= {{width: 300, height: 300}} />)}
         <Text style={styles.highlight1}>Tail</Text>
+        <View style={styles.fixToText}>
         <Button
           title = "Choose Photo"
           onPress = {this.handleChoosePhoto3}
         />
+        <Button 
+          title = "Take Photo"
+          color="#f194ff"
+          onPress = {this.handleTakePhoto3}
+        />
+      </View>
+      <View><Text>     </Text></View>
+      <View>
+        <Text style={styles.sectionDescription}>If Camera Button is not working please click this.</Text>
+        <Button
+          title = "Allow Camera Permission"
+          onPress = {this.requestCameraPermission}
+        />
+      </View>
       <View><Text>     </Text></View>
       <View><Text>     </Text></View>
       <View><Text>     </Text></View>
