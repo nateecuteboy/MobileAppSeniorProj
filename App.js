@@ -30,6 +30,8 @@ import {
 //import ImagePicker from 'react-native-image-picker';
 import Header1 from './components/header';
 import {launchCamera, launchImageLibrary} from 'react-native-image-picker';
+import ImagePicker from 'react-native-image-crop-picker';
+import { Alert } from 'react-native';
 
 
 export default class App extends React.Component {
@@ -39,7 +41,8 @@ export default class App extends React.Component {
     photo2 : null,
     photo3 : null
   };
-  handleChoosePhoto = () => {
+  
+  /*handleChoosePhoto = () => {
     const options = {
       noData: true
     };
@@ -50,6 +53,7 @@ export default class App extends React.Component {
       }
     });
   };
+
 
   handleTakePhoto = () => {
     const options = {
@@ -157,9 +161,162 @@ export default class App extends React.Component {
         this.setState({ photo3: response3 });
       }
     });
+  };*/
+
+  handleChoosePhoto = () => {
+    ImagePicker.openPicker({
+      width: 300,
+      height: 300,
+      cropping: true
+    }).then(photo => {
+      console.log(photo);
+      console.log("photo  height",photo.height);
+      console.log("photo  width",photo.width);
+      this.setState({
+        photo: {
+          uri: photo.path,
+        },
+      });
+    })
+    .catch((e) =>  console.log("no photo body choose"));    
   };
 
+  handleChoosePhoto1 = () => {
+    ImagePicker.openPicker({
+      width: 300,
+      height: 300,
+      cropping: true
+    }).then(photo1 => {
+      console.log(photo1);
+      console.log("photo 1 height",photo1.height);
+      console.log("photo 1 width",photo1.width);
+      this.setState({
+        photo1: {
+          uri: photo1.path,
+        },
+      });
+    })
+    .catch((e) =>  console.log("no photo head choose"));    
+  };
+
+  handleChoosePhoto2 = () => {
+    ImagePicker.openPicker({
+      width: 300,
+      height: 300,
+      cropping: true
+    }).then(photo2 => {
+      console.log(photo2);
+      console.log("photo 2 height",photo2.height);
+      console.log("photo 2 width",photo2.width);
+      this.setState({
+        photo2: {
+          uri: photo2.path,
+        },
+      });
+    })
+    .catch((e) =>  console.log("no photo mid choose"));    
+  };
+
+  handleChoosePhoto3 = () => {
+    ImagePicker.openPicker({
+      width: 300,
+      height: 300,
+      cropping: true,
+    }).then(photo3 => {
+      console.log(photo3);
+      console.log("photo 3 height",photo3.height);
+      console.log("photo 3 width",photo3.width);
+      this.setState({
+        photo3: {
+          uri: photo3.path
+        },
+      });
+    })
+    .catch((e) =>  console.log("no photo tail choose"));  
+  };
+
+  handleTakePhoto = () => {
+    ImagePicker.openCamera({
+      width: 300,
+      height: 300,
+      cropping: true,
+    }).then(photo => {
+      console.log(photo);
+      console.log("photo  height",photo.height);
+      console.log("photo  width",photo.width);
+      this.setState({
+        photo: {
+          uri: photo.path
+        },
+      });
+    })
+    .catch((e) =>  console.log("no photo body choose"));  
+  };
+
+  handleTakePhoto1 = () => {
+    ImagePicker.openCamera({
+      width: 300,
+      height: 300,
+      cropping: true,
+    }).then(photo1 => {
+      console.log(photo1);
+      console.log("photo 1 height",photo1.height);
+      console.log("photo 1 width",photo1.width);
+      this.setState({
+        photo1: {
+          uri: photo1.path
+        },
+      });
+    })
+    .catch((e) =>  console.log("no photo head choose"));  
+  };
+
+  handleTakePhoto2 = () => {
+    ImagePicker.openCamera({
+      width: 300,
+      height: 300,
+      cropping: true,
+    }).then(photo2 => {
+      console.log(photo2);
+      console.log("photo 2 height",photo2.height);
+      console.log("photo 2 width",photo2.width);
+      this.setState({
+        photo2: {
+          uri: photo2.path
+        },
+      });
+    })
+    .catch((e) =>  console.log("no photo mid choose"));  
+  };
+
+  handleTakePhoto3 = () => {
+    ImagePicker.openCamera({
+      width: 300,
+      height: 300,
+      cropping: true,
+    }).then(photo3 => {
+      console.log(photo3);
+      console.log("photo 3 height",photo3.height);
+      console.log("photo 3 width",photo3.width);
+      this.setState({
+        photo3: {
+          uri: photo3.path
+        },
+      });
+    })
+    .catch((e) =>  console.log("no photo tail choose"));  
+  };
+
+
   
+        /*<View>
+        <Text style={styles.sectionDescription}>If Camera Button is not working please click this.</Text>
+        <Button
+          title = "Allow Camera Permission"
+          onPress = {this.requestCameraPermission}
+        />
+        </View>*/
+
   render(){
     const {photo,photo1,photo2,photo3} = this.state;
     return(
@@ -237,10 +394,11 @@ export default class App extends React.Component {
       </View>
       <View><Text>     </Text></View>
       <View>
-        <Text style={styles.sectionDescription}>If Camera Button is not working please click this.</Text>
+        <Text style={styles.sectionDescription}>Click this Button to Analyze Snake.</Text>
+        <View><Text>     </Text></View>
         <Button
-          title = "Allow Camera Permission"
-          onPress = {this.requestCameraPermission}
+          title = "Analyze"
+          onPress={() => Alert.alert('Go to Analyze')}
         />
       </View>
       <View><Text>     </Text></View>
