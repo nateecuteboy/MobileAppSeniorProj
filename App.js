@@ -170,6 +170,7 @@ export default class App extends React.Component {
       cropping: true
     }).then(photo => {
       console.log(photo);
+      console.log("body image")
       console.log("photo  height",photo.height);
       console.log("photo  width",photo.width);
       this.setState({
@@ -188,6 +189,7 @@ export default class App extends React.Component {
       cropping: true
     }).then(photo1 => {
       console.log(photo1);
+      console.log("head image")
       console.log("photo 1 height",photo1.height);
       console.log("photo 1 width",photo1.width);
       this.setState({
@@ -206,6 +208,7 @@ export default class App extends React.Component {
       cropping: true
     }).then(photo2 => {
       console.log(photo2);
+      console.log("mid image")
       console.log("photo 2 height",photo2.height);
       console.log("photo 2 width",photo2.width);
       this.setState({
@@ -224,6 +227,7 @@ export default class App extends React.Component {
       cropping: true,
     }).then(photo3 => {
       console.log(photo3);
+      console.log("tail image")
       console.log("photo 3 height",photo3.height);
       console.log("photo 3 width",photo3.width);
       this.setState({
@@ -242,6 +246,7 @@ export default class App extends React.Component {
       cropping: true,
     }).then(photo => {
       console.log(photo);
+      console.log("body image")
       console.log("photo  height",photo.height);
       console.log("photo  width",photo.width);
       this.setState({
@@ -260,6 +265,7 @@ export default class App extends React.Component {
       cropping: true,
     }).then(photo1 => {
       console.log(photo1);
+      console.log("head image")
       console.log("photo 1 height",photo1.height);
       console.log("photo 1 width",photo1.width);
       this.setState({
@@ -278,6 +284,7 @@ export default class App extends React.Component {
       cropping: true,
     }).then(photo2 => {
       console.log(photo2);
+      console.log("mid image")
       console.log("photo 2 height",photo2.height);
       console.log("photo 2 width",photo2.width);
       this.setState({
@@ -296,6 +303,7 @@ export default class App extends React.Component {
       cropping: true,
     }).then(photo3 => {
       console.log(photo3);
+      console.log("tail image")
       console.log("photo 3 height",photo3.height);
       console.log("photo 3 width",photo3.width);
       this.setState({
@@ -334,6 +342,7 @@ export default class App extends React.Component {
                 <View><Text>     </Text></View>
           <View style ={{flex: 1, alignItems: 'center', justifyContent : 'center' }}>
           {photo && (<Image source= {{uri: photo.uri}} style= {{width: 300, height: 300}} />)}
+          </View>
         
         <Text style={styles.highlight1}>Body</Text>
 
@@ -348,9 +357,12 @@ export default class App extends React.Component {
           onPress = {this.handleTakePhoto}
         />
         </View>
-        
+
         <View><Text>     </Text></View>
+        <View><Text>-----------------------------------------------------------------------------------------------</Text></View>
+        <View style ={{flex: 1, alignItems: 'center', justifyContent : 'center' }}>
         {photo1 && (<Image source= {{uri: photo1.uri}} style= {{width: 300, height: 300}} />)}
+        </View>
         <Text style={styles.highlight1}>Head</Text>
         <View style={styles.fixToText}>
         <Button
@@ -365,7 +377,10 @@ export default class App extends React.Component {
         </View>
 
         <View><Text>     </Text></View>
+        <View><Text>-----------------------------------------------------------------------------------------------</Text></View>
+        <View style ={{flex: 1, alignItems: 'center', justifyContent : 'center' }}>
         {photo2 && (<Image source= {{uri: photo2.uri}} style= {{width: 300, height: 300}} />)}
+        </View>
         <Text style={styles.highlight1}>Mid</Text>
         <View style={styles.fixToText}>
         <Button
@@ -379,7 +394,10 @@ export default class App extends React.Component {
         />
         </View>
         <View><Text>     </Text></View>
+        <View><Text>-----------------------------------------------------------------------------------------------</Text></View>
+        <View style ={{flex: 1, alignItems: 'center', justifyContent : 'center' }}>
         {photo3 && (<Image source= {{uri: photo3.uri}} style= {{width: 300, height: 300}} />)}
+        </View>
         <Text style={styles.highlight1}>Tail</Text>
         <View style={styles.fixToText}>
         <Button
@@ -393,6 +411,7 @@ export default class App extends React.Component {
         />
       </View>
       <View><Text>     </Text></View>
+      <View><Text>-----------------------------------------------------------------------------------------------</Text></View>
       <View>
         <Text style={styles.sectionDescription}>Click this Button to Analyze Snake.</Text>
         <View><Text>     </Text></View>
@@ -400,7 +419,7 @@ export default class App extends React.Component {
           title = "Analyze"
           onPress={() => Alert.alert('Go to Analyze')}
         />
-      </View>
+      
       <View><Text>     </Text></View>
       <View><Text>     </Text></View>
       <View><Text>     </Text></View>
