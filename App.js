@@ -29,6 +29,7 @@ import {
 
 //import ImagePicker from 'react-native-image-picker';
 import Header1 from './components/header';
+import Header2 from './components/header2';
 import {launchCamera, launchImageLibrary} from 'react-native-image-picker';
 import ImagePicker from 'react-native-image-crop-picker';
 import { Alert } from 'react-native';
@@ -359,7 +360,9 @@ export default class App extends React.Component {
         </View>
 
         <View><Text>     </Text></View>
-        <View><Text>-----------------------------------------------------------------------------------------------</Text></View>
+        <View><Header2/></View>
+        <View><Text>     </Text></View>
+
         <View style ={{flex: 1, alignItems: 'center', justifyContent : 'center' }}>
         {photo1 && (<Image source= {{uri: photo1.uri}} style= {{width: 300, height: 300}} />)}
         </View>
@@ -377,7 +380,8 @@ export default class App extends React.Component {
         </View>
 
         <View><Text>     </Text></View>
-        <View><Text>-----------------------------------------------------------------------------------------------</Text></View>
+        <View><Header2/></View>
+        <View><Text>     </Text></View>
         <View style ={{flex: 1, alignItems: 'center', justifyContent : 'center' }}>
         {photo2 && (<Image source= {{uri: photo2.uri}} style= {{width: 300, height: 300}} />)}
         </View>
@@ -394,7 +398,8 @@ export default class App extends React.Component {
         />
         </View>
         <View><Text>     </Text></View>
-        <View><Text>-----------------------------------------------------------------------------------------------</Text></View>
+        <View><Header2/></View>
+        <View><Text>     </Text></View>
         <View style ={{flex: 1, alignItems: 'center', justifyContent : 'center' }}>
         {photo3 && (<Image source= {{uri: photo3.uri}} style= {{width: 300, height: 300}} />)}
         </View>
@@ -411,7 +416,7 @@ export default class App extends React.Component {
         />
       </View>
       <View><Text>     </Text></View>
-      <View><Text>-----------------------------------------------------------------------------------------------</Text></View>
+      <View><Header2/></View>
       <View>
         <Text style={styles.sectionDescription}>Click this Button to Analyze Snake.</Text>
         <View><Text>     </Text></View>
