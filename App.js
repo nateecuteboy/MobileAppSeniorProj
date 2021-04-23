@@ -16,7 +16,8 @@ import {
   StatusBar,
   Image,
   Button,
-  PermissionsAndroid
+  PermissionsAndroid,
+  LogBox
 } from 'react-native';
 
 import {
@@ -33,7 +34,10 @@ import Header2 from './components/header2';
 import {launchCamera, launchImageLibrary} from 'react-native-image-picker';
 import ImagePicker from 'react-native-image-crop-picker';
 import { Alert } from 'react-native';
+import axios from 'axios'
+import firebase from './firebase'
 
+LogBox.ignoreLogs(['Setting a timer']);
 
 export default class App extends React.Component {
   state = {
@@ -316,15 +320,43 @@ export default class App extends React.Component {
     .catch((e) =>  console.log("no photo tail choose"));  
   };
 
-
-  
-        /*<View>
-        <Text style={styles.sectionDescription}>If Camera Button is not working please click this.</Text>
-        <Button
-          title = "Allow Camera Permission"
-          onPress = {this.requestCameraPermission}
-        />
-        </View>*/
+  handleAnalyzeClicked = async () =>{
+    let photos = {
+      body:this.state.photo,
+      head: this.state.photo1,
+      mid: this.state.photo2,
+      tail: this.state.photo3
+    };
+    let timeStamp = Date.now();
+    let analyzeImageUrls = {}
+    // save all photos to storage
+    for(let key in photos){
+      if(photos[key] !== null){
+        try {
+          let image = await fetch(photos[key].uri);
+          let blob = await image.blob();
+          const storageRef = firebase.storage().ref('userImage/' + key + '/' + timeStamp + '.jpg');
+          await storageRef.put(blob);
+          let url = await storageRef.getDownloadURL();
+          analyzeImageUrls[key] = url;
+        } catch (error) {
+          console.log(console.error);
+          throw error;
+        }
+      }
+    }
+    console.log(analyzeImageUrls);
+    //upload all photos_url to backend
+    try {
+      let api = 'https://venomoussnake-303614.et.r.appspot.com/upload';
+      let predictedResponse = await axios.post(api, analyzeImageUrls);
+      console.log(predictedResponse.data);
+    } catch (error) {
+      console.log(error);
+      throw error;
+    }
+    
+  }
 
   render(){
     const {photo,photo1,photo2,photo3} = this.state;
@@ -422,7 +454,7 @@ export default class App extends React.Component {
         <View><Text>     </Text></View>
         <Button
           title = "Analyze"
-          onPress={() => Alert.alert('Go to Analyze')}
+          onPress={this.handleAnalyzeClicked}
         />
       
       <View><Text>     </Text></View>
