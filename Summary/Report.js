@@ -2,62 +2,135 @@ import React, { Component } from 'react'
 import { View, Text ,Image, Button,StyleSheet,StackNavigator, NavigationContainer,createStackNavigator} from 'react-native'
 
 
-export default function App(){
-  let Headimage = {uri:'https://pixnio.com/free-images/2018/11/19/2018-11-19-17-49-18.jpg'};
-  let Midimage = {uri:'https://downloadwap.com/thumbs2/wallpapers/p2/2019/abstract/15/9e2a5b7813184813.jpg'};
-  let Tail = {uri:'https://st3.depositphotos.com/13193658/33368/i/600/depositphotos_333683654-stock-photo-selective-focus-python-tail-isolated.jpg'};
-  let Body = {uri:'https://lh3.googleusercontent.com/proxy/58gfjX7Zd4gbPniwR4v2BTPTxco5FxCtvk9VJSTBlmkVdozu82g50itPRXBkx57naJvSOovAL_WSODpxD6lliXsMHXSa2vsbVfSuybuELMGRCLBZfG_850PJkOP45QkXdEB9Vzj591ccw-0Wdw'};
+export default function Report(props){
+ 
+  const data = props.data;
+  const userImage = props.userImage;
+
+  const snakeClass = {
+    '0':'งูเห่า',
+    '1':'งูจงอาง',
+    '2':'งูสามเหลี่ยม',
+    '3':'งูทับสมิงคลา',
+    '4':'งูแมวเซา',
+    '5':'งูกัปปะ',
+    '6':'งูเขียวหางไหม้ท้องเหลือง',
+    '7':'งูเขียวหางไหม้ตาโต',
+    '8':'งูเขียวหางไหม้ภูเก็ต',
+    '9':'งูเขียวหางไหม้ลายเสือ',
+    '10':'งูต้องไฟ',
+    '11':'งูปล้องทอง',
+    '12':'งูปล้องหวายหัวดำ',
+    '13':'งูสามเหลี่ยมหัวแดงหางแดง',
+  }
+
+  const weights =  [[2, 1, 1],
+                    [2, 1, 1],
+                    [1, 2, 1],
+                    [1, 1, 2],
+                    [1, 2, 1],
+                    [2, 2, 1],
+                    [2, 1, 1],
+                    [2, 1, 1],
+                    [1, 2, 1],
+                    [2, 1, 2],
+                    [2, 2, 1],
+                    [1, 1, 2],
+                    [1, 2, 1],
+                    [1, 2, 1]]
+
+  function getTopThreeScore(data){
+    let result = [];
+    //push object data in result
+    for(let key in data){
+      result.push({
+        snake:key,
+        score:parseFloat(data[key])
+      })
+    }
+    //sort result
+    for(let i = 0; i < result.length - 1; i++){
+      for(let j = i+1; j < result.length; j++){
+        if(result[i].score < result[j].score){
+          let temp = result[i];
+          result[i] = result[j];
+          result[j] = temp;
+        }
+      }
+    }
+    result = result.slice(0, 3);
+    return result;
+  }
+  let images = [];
+  for(let part in data){
+    console.log(userImage);
+    if(userImage[part] !== null){
+      images.push({
+        part:part,
+        uri:{uri:userImage[part]},
+        topThree:getTopThreeScore(data[part])
+      })
+    }
+  }
+
+  let score = {};
+  let rank1 = [];
+  let rank2 = [];
+  let parts = {'head':0, 'mid':1, 'tail':2};
+  images.forEach((data) => {
+    let topThree = data.topThree;
+    rank1.push({part:parts[data.part], snake:parseInt(topThree[0].snake)});
+    rank2.push({part:parts[data.part], snake:parseInt(topThree[1].snake)});
+  })
+  //rank1 จะบวกตาม weight ของ f1-score
+  rank1.forEach((data) => {
+    if(data.snake in score){
+      score[data.snake] += weights[data.snake][data.part];
+    }else{
+      score[data.snake] = weights[data.snake][data.part];
+    }
+  })
+  //rank2 จะบวก 1 ทุกกรณี เนื่องจากเป็น rank รอง
+  rank2.forEach((data) => {
+    if(data.snake in score){
+      score[data.snake] ++;
+    }
+  })
+  //หา class ที่มี score มากสุด
+  let max = -1;
+  let conclusionClass = {};
+  for(let key in score){
+    if(score[key] > max){
+      max = score[key];
+      conclusionClass = key;
+    }
+  }
+
+  function back(){
+    props.back();
+  }
   
   return (
     <View style={{backgroundColor: '#0000'}}>
       <Text style={{fontSize: 37,backgroundColor: '#3cb371'}}>Results</Text>
-
-      <View style={styles.padding}>
-      <Text style={styles.textHeader}>Head</Text>
-      <Image style = {{width: 98,height: 110,marginLeft: 20}} source={Headimage}/>
-      <View style={{flexDirection: 'column'}}>
-      <Text style={styles.textHighlight}>งูสามเหลี่ยมหัวแดงหางแดง:50%</Text>
-      <Text style={styles.text}>หัวงู 2 : 20%</Text>
-      <Text style={styles.text}>หัวงู 3 : 5%</Text>
-      </View>
-      </View>
-
-      <View style={styles.padding}>
-      <Text style={styles.textHeader}>Patten</Text>
-      <Image style = {{width: 98,height: 110,marginLeft: 10}} source={Midimage}/>
-      <View style={{flexDirection: 'column'}}>
-      <Text style={styles.textHighlight}>ลายงู 1 : 50%</Text>
-      <Text style={styles.text}>ลายงู 2: 30%</Text>
-      <Text style={styles.text}>ลายงู 3 : 10%</Text>
-      </View>
-      </View>
-
-      <View style={styles.padding}>
-      <Text style={styles.textHeader}>Tail</Text>
-      <Image style = {{width: 98,height: 110,marginLeft: 35}} source={Tail}/>
-      <View style={{flexDirection: 'column'}}>
-      <Text style={styles.textHighlight}>หางงู 1 : 60%</Text>
-      <Text style={styles.text}>หางงู 2 : 10%</Text>
-      <Text style={styles.text}>หางงู 3 : 1%</Text>
-      </View>
-      </View>
-
-      <View style={styles.padding}>
-      <Text style={styles.textHeader}>Body</Text>
-      <Image style = {{width: 98,height: 110,marginLeft: 25}} source={Body}/>
-      <View style={{flexDirection: 'column'}}>
-      <Text style={styles.textHighlight}>งู 1 : 40%</Text>
-      <Text style={styles.text}>งู 2 : 30%</Text>
-      <Text style={styles.text}>งู 3 : 10%</Text>
-      </View>
-      </View>
+      {images.map((item, index) => (
+        <View key={index} style={styles.padding}>
+          <Text style={styles.textHeader}>{item.part}</Text>
+          <Image style = {{width: 98,height: 110,marginLeft: 20}} source={item.uri}/>
+          <View style={{flexDirection: 'column'}}>
+            {item.topThree.map((value, index) => 
+              <Text key={index} style={index === 0 ? styles.textHighlight : styles.text}>{snakeClass[value.snake]} : {value.score}</Text>
+            )}
+          </View>
+        </View>
+      ))}
 
       <View style={{marginTop: 20,alignItems: 'center',backgroundColor: '#3cb371'}}>
-      <Text style={{fontSize: 25}}>สรุป : งูเห่า</Text>
+        <Text style={{fontSize: 25}}>สรุป : {snakeClass[conclusionClass]}</Text>
       </View>
 
       <View style={{marginTop: 10,alignItems: 'center'}}>
-      <Button title = "กลับไปหน้าแรก"/>
+        <Button title = "กลับไปหน้าแรก" onPress={back}/>
       </View>
 
     </View>
