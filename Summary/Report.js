@@ -129,7 +129,7 @@ export default function Report(props){
         <Text style={{fontSize: 25}}>สรุป : {snakeClass[conclusionClass]}</Text>
       </View>
 
-      <View style={{marginTop: 10,alignItems: 'center'}}>
+      <View style={{marginTop: '30%',alignItems: 'center'}}>
         <Button title = "กลับไปหน้าแรก" onPress={back}/>
       </View>
 
