@@ -1,5 +1,14 @@
 import React, { Component } from 'react'
-import { View, Text ,Image, Button,StyleSheet,StackNavigator, NavigationContainer,createStackNavigator} from 'react-native'
+import { View, 
+  Text ,
+  Image, 
+  Button,
+  StyleSheet,
+  ScrollView,
+  StackNavigator,
+  NavigationContainer,
+  createStackNavigator
+} from 'react-native'
 
 
 export default function Report(props){
@@ -111,29 +120,32 @@ export default function Report(props){
   }
   
   return (
-    <View style={{backgroundColor: '#0000'}}>
-      <Text style={{fontSize: 37,backgroundColor: '#3cb371'}}>Results</Text>
-      {images.map((item, index) => (
-        <View key={index} style={styles.padding}>
-          <Text style={styles.textHeader}>{item.part}</Text>
-          <Image style = {{width: 98,height: 110,marginLeft: 20}} source={item.uri}/>
-          <View style={{flexDirection: 'column'}}>
-            {item.topThree.map((value, index) => 
-              <Text key={index} style={index === 0 ? styles.textHighlight : styles.text}>{snakeClass[value.snake]} : {value.score}</Text>
-            )}
-          </View>
+    <>
+      <ScrollView>
+        <View style={{backgroundColor: '#0000'}}>
+          <Text style={{fontSize: 37,backgroundColor: '#3cb371'}}>Results</Text>
+          {images.map((item, index) => (
+            <View key={index} style={styles.padding}>
+              <Image style = {{width: 98,marginLeft: 20}} source={item.uri}/>
+              <View style={{flexDirection: 'column'}}>
+                <Text style={styles.text}>{item.part}</Text>
+                {item.topThree.map((value, index) => 
+                  <Text key={index} style={index === 0 ? styles.textHighlight : styles.text}>{snakeClass[value.snake]} : {value.score}</Text>
+                )}
+              </View>
+            </View>
+          ))}
+
         </View>
-      ))}
+      </ScrollView>
 
       <View style={{marginTop: 20,alignItems: 'center',backgroundColor: '#3cb371'}}>
         <Text style={{fontSize: 25}}>สรุป : {snakeClass[conclusionClass]}</Text>
       </View>
-
-      <View style={{marginTop: '30%',alignItems: 'center'}}>
+      <View style={styles.backButton}>
         <Button title = "กลับไปหน้าแรก" onPress={back}/>
       </View>
-
-    </View>
+    </>
   )
 }
 
@@ -155,10 +167,7 @@ const styles = StyleSheet.create({
     marginLeft: 10,
     marginRight: 10,
     backgroundColor: '#9ff8b1',
-    borderTopLeftRadius: 20,
-    borderTopRightRadius: 20,
-    borderBottomLeftRadius: 20,
-    borderBottomRightRadius: 20,
+    borderRadius: 20
   },
   textHeader: {
     textAlign: 'center',
@@ -166,4 +175,9 @@ const styles = StyleSheet.create({
     marginLeft: 12,
     marginTop: 40,
   },
+  backButton:{
+    alignItems: 'center',
+    marginTop:20,
+    marginBottom:20
+  }
 });

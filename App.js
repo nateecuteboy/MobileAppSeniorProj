@@ -268,10 +268,9 @@ export default class App extends React.Component {
     return(
       <>
       {this.state.predicted === null &&
-        <SafeAreaView>
+        <>
           <Header1/>
-            <ScrollView
-                style={styles.scrollView}>
+            <ScrollView style={styles.scrollView}>
               <View style={styles.body}>
               <View style={styles.sectionContainer}>
                 <Text style={styles.sectionTitle}>Choose Picture</Text>
@@ -371,7 +370,7 @@ export default class App extends React.Component {
           </View>
           </View>
         </ScrollView>
-        </SafeAreaView>
+        </>
       }
       {this.state.predicted !== null && 
       <Report data={this.state.predicted} userImage={this.state.imageUrl} back={this.handleBackClicked}/>
