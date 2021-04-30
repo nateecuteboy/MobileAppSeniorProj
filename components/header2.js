@@ -16,6 +16,7 @@ const style = StyleSheet.create({
     header : {
         height : 1,
         paddingTop : 2,
-        backgroundColor : 'black'
+        backgroundColor : 'black',
+        marginTop:20
     }
 });

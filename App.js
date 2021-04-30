@@ -272,104 +272,103 @@ export default class App extends React.Component {
           <Header1/>
             <ScrollView style={styles.scrollView}>
               <View style={styles.body}>
-              <View style={styles.sectionContainer}>
-                <Text style={styles.sectionTitle}>Choose Picture</Text>
-                    <Text style={styles.sectionDescription}>
-                      Choose Picture that contain with <Text style={styles.highlight}>Each Part of snake </Text>
-                      and then go to Analyze. 
-                    </Text>
-                    <View><Text>     </Text></View>
-              <View style ={{flex: 1, alignItems: 'center', justifyContent : 'center' }}>
-              {photo && (<Image source= {{uri: photo.uri}} style= {{width: 300, height: 300}} />)}
-              </View>
+                <View style={styles.sectionContainer}>
+                  <Text style={styles.sectionTitle}>Choose Picture</Text>
+                  <Text style={styles.sectionDescription}>
+                    Choose Picture that contain with <Text style={styles.highlight}>Each Part of snake </Text>
+                    and then go to Analyze. 
+                  </Text>
+                  <View><Text>     </Text></View>
+                  <View style ={{flex: 1, alignItems: 'center', justifyContent : 'center' }}>
+                    {photo && (<Image source= {{uri: photo.uri}} style= {styles.imageStyle} />)}
+                  </View>
             
-            <Text style={styles.highlight1}>Body</Text>
+                  <Text style={styles.highlight1}>Body</Text>
 
-            <View style={styles.fixToText}>
-            <Button 
-              title = "Choose Photo"
-              onPress = {this.handleChoosePhoto}
-            />
-            <Button 
-              title = "Take Photo"
-              color="#f194ff"
-              onPress = {this.handleTakePhoto}
-            />
-            </View>
+                  <View style={styles.fixToText}>
+                    <Button 
+                      title = "Choose Photo"
+                      onPress = {this.handleChoosePhoto}
+                    />
+                    <Button 
+                      title = "Take Photo"
+                      color="#f194ff"
+                      onPress = {this.handleTakePhoto}
+                    />
+                  </View>
 
-            <View><Text>     </Text></View>
-            <View><Header2/></View>
-            <View><Text>     </Text></View>
+                  <View><Header2/></View>
 
-            <View style ={{flex: 1, alignItems: 'center', justifyContent : 'center' }}>
-            {photo1 && (<Image source= {{uri: photo1.uri}} style= {{width: 300, height: 300}} />)}
-            </View>
-            <Text style={styles.highlight1}>Head</Text>
-            <View style={styles.fixToText}>
-            <Button
-              title = "Choose Photo"
-              onPress = {this.handleChoosePhoto1}
-            />
-            <Button 
-              title = "Take Photo"
-              color="#f194ff"
-              onPress = {this.handleTakePhoto1}
-            />
-            </View>
-
-            <View><Text>     </Text></View>
-            <View><Header2/></View>
-            <View><Text>     </Text></View>
-            <View style ={{flex: 1, alignItems: 'center', justifyContent : 'center' }}>
-            {photo2 && (<Image source= {{uri: photo2.uri}} style= {{width: 300, height: 300}} />)}
-            </View>
-            <Text style={styles.highlight1}>Mid</Text>
-            <View style={styles.fixToText}>
-            <Button
-              title = "Choose Photo"
-              onPress = {this.handleChoosePhoto2}
-            />
-            <Button 
-              title = "Take Photo"
-              color="#f194ff"
-              onPress = {this.handleTakePhoto2}
-            />
-            </View>
-            <View><Text>     </Text></View>
-            <View><Header2/></View>
-            <View><Text>     </Text></View>
-            <View style ={{flex: 1, alignItems: 'center', justifyContent : 'center' }}>
-            {photo3 && (<Image source= {{uri: photo3.uri}} style= {{width: 300, height: 300}} />)}
-            </View>
-            <Text style={styles.highlight1}>Tail</Text>
-            <View style={styles.fixToText}>
-            <Button
-              title = "Choose Photo"
-              onPress = {this.handleChoosePhoto3}
-            />
-            <Button 
-              title = "Take Photo"
-              color="#f194ff"
-              onPress = {this.handleTakePhoto3}
-            />
-          </View>
-          <View><Text>     </Text></View>
-          <View><Header2/></View>
-          <View>
-            <Text style={styles.sectionDescription}>Click this Button to Analyze Snake.</Text>
-            <View><Text>     </Text></View>
-            <Button
-              title = "Analyze"
-              onPress={this.handleAnalyzeClicked}
-            />
-          {[...Array(9)].map((value, index) => 
-            <View key={index}><Text>     </Text></View>
-          )}
-          
-          </View>
-          </View>
-          </View>
-        </ScrollView>
+                  <View style ={{flex: 1, alignItems: 'center', justifyContent : 'center' }}>
+                    {photo1 && (<Image source= {{uri: photo1.uri}} style= {styles.imageStyle} />)}
+                  </View>
+                  <Text style={styles.highlight1}>Head</Text>
+                  <View style={styles.fixToText}>
+                    <Button
+                      title = "Choose Photo"
+                      onPress = {this.handleChoosePhoto1}
+                    />
+                    <Button 
+                      title = "Take Photo"
+                      color="#f194ff"
+                      onPress = {this.handleTakePhoto1}
+                    />
+                  </View>
+                  <View><Header2/></View>
+                  <View style ={{flex: 1, alignItems: 'center', justifyContent : 'center' }}>
+                    {photo2 && (<Image source= {{uri: photo2.uri}} style= {styles.imageStyle} />)}
+                  </View>
+                  <Text style={styles.highlight1}>Mid</Text>
+                  <View style={styles.fixToText}>
+                    <Button
+                      title = "Choose Photo"
+                      onPress = {this.handleChoosePhoto2}
+                    />
+                    <Button 
+                      title = "Take Photo"
+                      color="#f194ff"
+                      onPress = {this.handleTakePhoto2}
+                    />
+                  </View>
+                  <View><Header2/></View>
+                  <View style ={{flex: 1, alignItems: 'center', justifyContent : 'center' }}>
+                    {photo3 && (<Image source= {{uri: photo3.uri}} style= {styles.imageStyle} />)}
+                  </View>
+                  <Text style={styles.highlight1}>Tail</Text>
+                  <View style={styles.fixToText}>
+                    <Button
+                      title = "Choose Photo"
+                      onPress = {this.handleChoosePhoto3}
+                    />
+                    <Button 
+                      title = "Take Photo"
+                      color="#f194ff"
+                      onPress = {this.handleTakePhoto3}
+                    />
+                  </View>
+              
+                  <View><Header2/></View>
+                  <View
+                    style={{
+                      marginTop:40
+                    }}
+                  >
+                    <Text style={styles.sectionDescription}>Click this Button to Analyze Snake.</Text>
+                  </View>
+                  <View
+                    style={{
+                      marginTop:20,
+                      marginBottom:20
+                    }}
+                  >
+                    <Button
+                      title = "Analyze"
+                      onPress={this.handleAnalyzeClicked}
+                    />
+                  </View>
+                </View>
+              </View>
+            </ScrollView>
         </>
       }
       {this.state.predicted !== null && 
@@ -414,7 +413,8 @@ const styles = StyleSheet.create({
   highlight1: {
     fontWeight: '700',
     fontSize: 18,
-    textAlign: 'center'
+    textAlign: 'center',
+    marginTop:20
   },
   footer: {
     color: Colors.dark,
@@ -429,4 +429,9 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
   },
+  imageStyle : {
+    height:300,
+    width:300,
+    marginTop:20
+  }
 });
