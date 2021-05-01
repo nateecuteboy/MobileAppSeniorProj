@@ -72,7 +72,6 @@ export default function Report(props){
   }
   let images = [];
   for(let part in data){
-    console.log(userImage);
     if(userImage[part] !== null){
       images.push({
         part:part,
@@ -88,8 +87,10 @@ export default function Report(props){
   let parts = {'head':0, 'mid':1, 'tail':2};
   images.forEach((data) => {
     let topThree = data.topThree;
-    rank1.push({part:parts[data.part], snake:parseInt(topThree[0].snake)});
-    rank2.push({part:parts[data.part], snake:parseInt(topThree[1].snake)});
+    if(data.part !== 'body'){
+      rank1.push({part:parts[data.part], snake:parseInt(topThree[0].snake)});
+      rank2.push({part:parts[data.part], snake:parseInt(topThree[1].snake)});
+    }
   })
   //rank1 จะบวกตาม weight ของ f1-score
   rank1.forEach((data) => {
@@ -102,7 +103,7 @@ export default function Report(props){
   //rank2 จะบวก 1 ทุกกรณี เนื่องจากเป็น rank รอง
   rank2.forEach((data) => {
     if(data.snake in score){
-      score[data.snake] ++;
+      score[data.snake]++;
     }
   })
   //หา class ที่มี score มากสุด
