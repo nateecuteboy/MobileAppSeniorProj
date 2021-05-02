@@ -233,13 +233,12 @@ export default class App extends React.Component {
         }
       }
     }
-    console.log(analyzeImageUrls);
     //upload all photos_url to backend
     try {
       let api = 'https://venomoussnake-303614.et.r.appspot.com/upload';
       let predicted = await axios.post(api, analyzeImageUrls);
       predicted = predicted.data;
-      this.setState({...this.state, predicted});    
+      this.setState({...this.state, predicted});
     } catch (error) {
       console.log(error);
       throw error;

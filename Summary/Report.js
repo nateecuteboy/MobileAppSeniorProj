@@ -115,7 +115,12 @@ export default function Report(props){
       conclusionClass = key;
     }
   }
-
+  //head, mid, tail are empty
+  if(Object.keys(conclusionClass).length === 0){
+    let bodyClass = images.find(item => item.part === 'body');
+    conclusionClass = bodyClass['topThree'][0]['snake'];
+  }
+  
   function back(){
     props.back();
   }
