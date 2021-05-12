@@ -108,17 +108,19 @@ export default function Report(props){
   })
   //หา class ที่มี score มากสุด
   let max = -1;
-  let conclusionClass = {};
+  let conclusionClass = '';
   for(let key in score){
     if(score[key] > max){
       max = score[key];
-      conclusionClass = key;
+      conclusionClass = snakeClass[key];
+    }else if(score[key] === max){
+      conclusionClass = conclusionClass + ', ' + snakeClass[key];
     }
   }
-  //head, mid, tail are empty
+  //special case : head, mid, tail are empty
   if(Object.keys(conclusionClass).length === 0){
     let bodyClass = images.find(item => item.part === 'body');
-    conclusionClass = bodyClass['topThree'][0]['snake'];
+    conclusionClass = snakeClass[bodyClass['topThree'][0]['snake']];
   }
   
   function back(){
@@ -146,7 +148,7 @@ export default function Report(props){
       </ScrollView>
 
       <View style={{marginTop: 20,alignItems: 'center',backgroundColor: '#3cb371'}}>
-        <Text style={{fontSize: 25}}>สรุป : {snakeClass[conclusionClass]}</Text>
+        <Text style={{fontSize: 25}}>สรุป : {conclusionClass === '' ? 'ไม่สามารถสรุปได้' : conclusionClass}</Text>
       </View>
       <View style={styles.backButton}>
         <Button title = "กลับไปหน้าแรก" onPress={back}/>
