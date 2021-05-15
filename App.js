@@ -17,7 +17,8 @@ import {
   Image,
   Button,
   PermissionsAndroid,
-  LogBox
+  LogBox,
+  ActivityIndicator
 } from 'react-native';
 
 import {
@@ -47,6 +48,7 @@ export default class App extends React.Component {
     photo2 : null,
     photo3 : null,
     predicted:null,
+    loading:false,
     imageUrl:{
       'head':null,
       'mid':null,
@@ -208,6 +210,7 @@ export default class App extends React.Component {
   };
 
   handleAnalyzeClicked = async () =>{
+    this.setState({ loading:true });
     let photos = {
       body:this.state.photo,
       head: this.state.photo1,
@@ -228,6 +231,7 @@ export default class App extends React.Component {
           analyzeImageUrls[key] = url;
           this.state.imageUrl[key] = url;
         } catch (error) {
+          this.setState({loading:false});
           console.log(console.error);
           throw error;
         }
@@ -240,10 +244,11 @@ export default class App extends React.Component {
       predicted = predicted.data;
       this.setState({...this.state, predicted});
     } catch (error) {
+      this.setState({loading:false});
       console.log(error);
       throw error;
     }
-    
+    this.setState({loading:false});
   }
 
   handleBackClicked = () =>{
@@ -266,7 +271,7 @@ export default class App extends React.Component {
     const {photo,photo1,photo2,photo3,predicted} = this.state;
     return(
       <>
-      {this.state.predicted === null &&
+      {(this.state.predicted === null && !this.state.loading) &&
         <>
           <Header1/>
             <ScrollView style={styles.scrollView}>
@@ -370,8 +375,18 @@ export default class App extends React.Component {
             </ScrollView>
         </>
       }
+      {this.state.loading &&
+        <>
+          <View style={{alignItems:'center'}}>
+            <Text>กำลังประมวลผล กรุณารอสักครู่ ...</Text>
+          </View>
+          <View style={[styles.container, styles.horizontal]}>
+            <ActivityIndicator size="large" color="#0000ff" />
+          </View>
+        </>
+      }
       {this.state.predicted !== null && 
-      <Report data={this.state.predicted} userImage={this.state.imageUrl} back={this.handleBackClicked}/>
+        <Report data={this.state.predicted} userImage={this.state.imageUrl} back={this.handleBackClicked}/>
       }
       
       </>
@@ -432,5 +447,13 @@ const styles = StyleSheet.create({
     height:300,
     width:300,
     marginTop:20
+  },
+  container: {
+    flex: 1,
+    justifyContent: "center"
+  },
+  horizontal: {
+    flexDirection: "row",
+    justifyContent: "space-around",
   }
 });
