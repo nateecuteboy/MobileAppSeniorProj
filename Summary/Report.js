@@ -140,27 +140,18 @@ export default function Report(props){
   async function downloadImage(){
     const imageRef = await captureRef(viewShotRef);
     const image = CameraRoll.save(imageRef, 'photo');
-    if(image){
-      // save image success
-      Alert.alert("Save image success!", "บันทึกรูปภาพแล้ว",
-        [
-          {
-            text:"OK",
-            onPress:() => { console.log('OK pressed'); }
-          }
-        ]
-      )
-    }else{
-      // save image fail
-      Alert.alert("Save image fail!", "เกิดข้อผิดพลาด โปรดลองใหม่อีกครั้ง",
-        [
-          {
-            text:"OK",
-            onPress:() => { console.log('OK pressed'); }
-          }
-        ]
-      )
-    }
+    //save images success or fail
+    const title = image ? 'Save image success!' : 'Save image fail!';
+    const message = image ? 'บันทึกรูปภาพแล้ว' : 'เกิดข้อผิดพลาด โปรดลองใหม่อีกครั้ง';   
+    Alert.alert(title, message,
+      [
+        {
+          text:"OK",
+          onPress:() => { console.log('OK pressed'); }
+        }
+      ]
+    )
+   
   }
   
   return (

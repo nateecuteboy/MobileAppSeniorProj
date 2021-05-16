@@ -8,33 +8,22 @@
 
 import React from 'react';
 import {
-  SafeAreaView,
   StyleSheet,
   ScrollView,
   View,
   Text,
-  StatusBar,
   Image,
   Button,
-  PermissionsAndroid,
   LogBox,
-  ActivityIndicator
+  ActivityIndicator,
+  Alert
 } from 'react-native';
 
-import {
-  Header,
-  LearnMoreLinks,
-  Colors,
-  DebugInstructions,
-  ReloadInstructions,
-} from 'react-native/Libraries/NewAppScreen';
+import { Colors } from 'react-native/Libraries/NewAppScreen';
 
-//import ImagePicker from 'react-native-image-picker';
 import Header1 from './components/header';
 import Header2 from './components/header2';
-import {launchCamera, launchImageLibrary} from 'react-native-image-picker';
 import ImagePicker from 'react-native-image-crop-picker';
-import { Share } from 'react-native';
 import axios from 'axios'
 import firebase from './firebase';
 import Report from './Summary/Report';
@@ -210,45 +199,53 @@ export default class App extends React.Component {
   };
 
   handleAnalyzeClicked = async () =>{
-    this.setState({ loading:true });
-    let photos = {
-      body:this.state.photo,
-      head: this.state.photo1,
-      mid: this.state.photo2,
-      tail: this.state.photo3
-    };
-    let timeStamp = Date.now();
-    let analyzeImageUrls = {}
-    // save all photos to storage
-    for(let key in photos){
-      if(photos[key] !== null){
-        try {
-          let image = await fetch(photos[key].uri);
-          let blob = await image.blob();
-          const storageRef = firebase.storage().ref('userImage/' + key + '/' + timeStamp + '.jpg');
-          await storageRef.put(blob);
-          let url = await storageRef.getDownloadURL();
-          analyzeImageUrls[key] = url;
-          this.state.imageUrl[key] = url;
-        } catch (error) {
-          this.setState({loading:false});
-          console.log(console.error);
-          throw error;
+    //Images not choosed
+    if(this.state.photo === null && this.state.photo1 === null && this.state.photo2 === null && this.state.photo3 === null){
+      Alert.alert("Please choose picture", "กรุณาเลือกรูปภาพอย่างน้อย 1 รูป", [{ text:'OK', onPress:() => {
+        console.log('OK pressed');
+      }}])
+    }else{
+      //At least one image is choosed.
+      this.setState({ loading:true });
+      let photos = {
+        body:this.state.photo,
+        head: this.state.photo1,
+        mid: this.state.photo2,
+        tail: this.state.photo3
+      };
+      let timeStamp = Date.now();
+      let analyzeImageUrls = {}
+      // save all photos to storage
+      for(let key in photos){
+        if(photos[key] !== null){
+          try {
+            let image = await fetch(photos[key].uri);
+            let blob = await image.blob();
+            const storageRef = firebase.storage().ref('userImage/' + key + '/' + timeStamp + '.jpg');
+            await storageRef.put(blob);
+            let url = await storageRef.getDownloadURL();
+            analyzeImageUrls[key] = url;
+            this.state.imageUrl[key] = url;
+          } catch (error) {
+            this.setState({loading:false});
+            console.log(console.error);
+            throw error;
+          }
         }
       }
-    }
-    //upload all photos_url to backend
-    try {
-      let api = 'https://venomoussnake-303614.et.r.appspot.com/upload';
-      let predicted = await axios.post(api, analyzeImageUrls);
-      predicted = predicted.data;
-      this.setState({...this.state, predicted});
-    } catch (error) {
+      //upload all photos_url to backend
+      try {
+        let api = 'https://venomoussnake-303614.et.r.appspot.com/upload';
+        let predicted = await axios.post(api, analyzeImageUrls);
+        predicted = predicted.data;
+        this.setState({...this.state, predicted});
+      } catch (error) {
+        this.setState({loading:false});
+        console.log(error);
+        throw error;
+      }
       this.setState({loading:false});
-      console.log(error);
-      throw error;
     }
-    this.setState({loading:false});
   }
 
   handleBackClicked = () =>{
@@ -268,19 +265,19 @@ export default class App extends React.Component {
   }
 
   handleCanclePhoto = () => {
-    this.setState({photo:null});
+    this.setState({ photo:null });
   }
 
   handleCanclePhoto1 = () => {
-    this.setState({photo1:null});
+    this.setState({ photo1:null });
   }
 
   handleCanclePhoto2 = () => {
-    this.setState({photo2:null});
+    this.setState({ photo2:null });
   }
 
   handleCanclePhoto3 = () => {
-    this.setState({photo3:null});
+    this.setState({ photo3:null });
   }
 
   render(){
