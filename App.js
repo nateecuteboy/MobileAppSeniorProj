@@ -34,12 +34,12 @@ import Header1 from './components/header';
 import Header2 from './components/header2';
 import {launchCamera, launchImageLibrary} from 'react-native-image-picker';
 import ImagePicker from 'react-native-image-crop-picker';
-import { Alert } from 'react-native';
+import { Share } from 'react-native';
 import axios from 'axios'
 import firebase from './firebase';
 import Report from './Summary/Report';
 
-LogBox.ignoreLogs(['Setting a timer']);
+LogBox.ignoreLogs(['Setting a timer', 'Possible Unhandled']);
 
 export default class App extends React.Component {
   state = {
@@ -267,8 +267,24 @@ export default class App extends React.Component {
     })
   }
 
+  handleCanclePhoto = () => {
+    this.setState({photo:null});
+  }
+
+  handleCanclePhoto1 = () => {
+    this.setState({photo1:null});
+  }
+
+  handleCanclePhoto2 = () => {
+    this.setState({photo2:null});
+  }
+
+  handleCanclePhoto3 = () => {
+    this.setState({photo3:null});
+  }
+
   render(){
-    const {photo,photo1,photo2,photo3,predicted} = this.state;
+    const {photo,photo1,photo2,photo3} = this.state;
     return(
       <>
       {(this.state.predicted === null && !this.state.loading) &&
@@ -289,17 +305,26 @@ export default class App extends React.Component {
             
                   <Text style={styles.highlight1}>Body</Text>
 
-                  <View style={styles.fixToText}>
-                    <Button 
-                      title = "Choose Photo"
-                      onPress = {this.handleChoosePhoto}
-                    />
-                    <Button 
-                      title = "Take Photo"
-                      color="#f194ff"
-                      onPress = {this.handleTakePhoto}
-                    />
-                  </View>
+                  {photo === null ?
+                    <View style={styles.fixToText}>
+                      <Button 
+                        title = "Choose Photo"
+                        onPress = {this.handleChoosePhoto}
+                      />
+                      <Button 
+                        title = "Take Photo"
+                        color="#f194ff"
+                        onPress = {this.handleTakePhoto}
+                      />
+                    </View> :
+                    <View style={styles.cancleButton}>
+                      <Button 
+                        title = "Cancle"
+                        color="#FF3333"
+                        onPress = {this.handleCanclePhoto}
+                      />
+                    </View>
+                  }
 
                   <View><Header2/></View>
 
@@ -307,49 +332,76 @@ export default class App extends React.Component {
                     {photo1 && (<Image source= {{uri: photo1.uri}} style= {styles.imageStyle} />)}
                   </View>
                   <Text style={styles.highlight1}>Head</Text>
-                  <View style={styles.fixToText}>
-                    <Button
-                      title = "Choose Photo"
-                      onPress = {this.handleChoosePhoto1}
-                    />
-                    <Button 
-                      title = "Take Photo"
-                      color="#f194ff"
-                      onPress = {this.handleTakePhoto1}
-                    />
-                  </View>
+                  {photo1 === null ?
+                    <View style={styles.fixToText}>
+                      <Button 
+                        title = "Choose Photo"
+                        onPress = {this.handleChoosePhoto1}
+                      />
+                      <Button 
+                        title = "Take Photo"
+                        color="#f194ff"
+                        onPress = {this.handleTakePhoto1}
+                      />
+                    </View> :
+                    <View style={styles.cancleButton}>
+                      <Button 
+                        title = "Cancle"
+                        color="#FF3333"
+                        onPress = {this.handleCanclePhoto1}
+                      />
+                    </View>
+                  }
                   <View><Header2/></View>
                   <View style ={{flex: 1, alignItems: 'center', justifyContent : 'center' }}>
                     {photo2 && (<Image source= {{uri: photo2.uri}} style= {styles.imageStyle} />)}
                   </View>
                   <Text style={styles.highlight1}>Mid</Text>
-                  <View style={styles.fixToText}>
-                    <Button
-                      title = "Choose Photo"
-                      onPress = {this.handleChoosePhoto2}
-                    />
-                    <Button 
-                      title = "Take Photo"
-                      color="#f194ff"
-                      onPress = {this.handleTakePhoto2}
-                    />
-                  </View>
+                  {photo2 === null ?
+                    <View style={styles.fixToText}>
+                      <Button 
+                        title = "Choose Photo"
+                        onPress = {this.handleChoosePhoto2}
+                      />
+                      <Button 
+                        title = "Take Photo"
+                        color="#f194ff"
+                        onPress = {this.handleTakePhoto2}
+                      />
+                    </View> :
+                    <View style={styles.cancleButton}>
+                      <Button 
+                        title = "Cancle"
+                        color="#FF3333"
+                        onPress = {this.handleCanclePhoto2}
+                      />
+                    </View>
+                  }
                   <View><Header2/></View>
                   <View style ={{flex: 1, alignItems: 'center', justifyContent : 'center' }}>
                     {photo3 && (<Image source= {{uri: photo3.uri}} style= {styles.imageStyle} />)}
                   </View>
                   <Text style={styles.highlight1}>Tail</Text>
-                  <View style={styles.fixToText}>
-                    <Button
-                      title = "Choose Photo"
-                      onPress = {this.handleChoosePhoto3}
-                    />
-                    <Button 
-                      title = "Take Photo"
-                      color="#f194ff"
-                      onPress = {this.handleTakePhoto3}
-                    />
-                  </View>
+                  {photo3 === null ?
+                    <View style={styles.fixToText}>
+                      <Button 
+                        title = "Choose Photo"
+                        onPress = {this.handleChoosePhoto3}
+                      />
+                      <Button 
+                        title = "Take Photo"
+                        color="#f194ff"
+                        onPress = {this.handleTakePhoto3}
+                      />
+                    </View> :
+                    <View style={styles.cancleButton}>
+                      <Button 
+                        title = "Cancle"
+                        color="#FF3333"
+                        onPress = {this.handleCanclePhoto3}
+                      />
+                    </View>
+                  }
               
                   <View><Header2/></View>
                   <View
@@ -375,20 +427,21 @@ export default class App extends React.Component {
             </ScrollView>
         </>
       }
+      {/* loading */}
       {this.state.loading &&
         <>
           <View style={{alignItems:'center'}}>
-            <Text>กำลังประมวลผล กรุณารอสักครู่ ...</Text>
+            <Text style={{fontSize:24}}>กำลังประมวลผล กรุณารอสักครู่ ...</Text>
           </View>
           <View style={[styles.container, styles.horizontal]}>
             <ActivityIndicator size="large" color="#0000ff" />
           </View>
         </>
       }
+      {/* report result */}
       {this.state.predicted !== null && 
         <Report data={this.state.predicted} userImage={this.state.imageUrl} back={this.handleBackClicked}/>
       }
-      
       </>
     )
 
@@ -455,5 +508,9 @@ const styles = StyleSheet.create({
   horizontal: {
     flexDirection: "row",
     justifyContent: "space-around",
+  },
+  cancleButton:{
+    marginLeft:40,
+    marginRight:40
   }
 });

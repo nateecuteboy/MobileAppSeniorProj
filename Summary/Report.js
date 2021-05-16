@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+import React, { useRef } from 'react'
 import { View, 
   Text ,
   Image, 
@@ -7,12 +7,17 @@ import { View,
   ScrollView,
   StackNavigator,
   NavigationContainer,
-  createStackNavigator
-} from 'react-native'
-
+  createStackNavigator,
+  SafeAreaView,
+  Alert
+} from 'react-native';
+import ViewShot, {captureRef} from 'react-native-view-shot';
+import Share from 'react-native-share';
+import CameraRoll from '@react-native-community/cameraroll';
 
 export default function Report(props){
  
+  const viewShotRef = useRef();
   const data = props.data;
   const userImage = props.userImage;
 
@@ -126,30 +131,81 @@ export default function Report(props){
   function back(){
     props.back();
   }
+
+  async function shareImage(){
+    const imageURI = await viewShotRef.current.capture();
+    Share.open({title:'resultImage', url:imageURI});
+  }
+
+  async function downloadImage(){
+    const imageRef = await captureRef(viewShotRef);
+    const image = CameraRoll.save(imageRef, 'photo');
+    if(image){
+      // save image success
+      Alert.alert("Save image success!", "บันทึกรูปภาพแล้ว",
+        [
+          {
+            text:"OK",
+            onPress:() => { console.log('OK pressed'); }
+          }
+        ]
+      )
+    }else{
+      // save image fail
+      Alert.alert("Save image fail!", "เกิดข้อผิดพลาด โปรดลองใหม่อีกครั้ง",
+        [
+          {
+            text:"OK",
+            onPress:() => { console.log('OK pressed'); }
+          }
+        ]
+      )
+    }
+  }
   
   return (
     <>
+    {/* prediction result */}
       <ScrollView>
-        <View style={{backgroundColor: '#0000'}}>
-          <Text style={{fontSize: 37,backgroundColor: '#3cb371'}}>Results</Text>
-          {images.map((item, index) => (
-            <View key={index} style={styles.padding}>
-              <Image style = {{width: 98,marginLeft: 20}} source={item.uri}/>
-              <View style={{flexDirection: 'column'}}>
-                <Text style={styles.text}>{item.part}</Text>
-                {item.topThree.map((value, index) => 
-                  <Text key={index} style={index === 0 ? styles.textHighlight : styles.text}>{snakeClass[value.snake]} : {value.score}</Text>
-                )}
+        <ViewShot ref={viewShotRef} options={{ format: "jpg", quality: 0.9 }}>
+          <View style={{backgroundColor: '#0000'}}>
+            <Text style={{fontSize: 37,backgroundColor: '#3cb371'}}>Results</Text>
+            {images.map((item, index) => (
+              <View key={index} style={styles.padding}>
+                <Image style = {{width: 98,marginLeft: 20}} source={item.uri}/>
+                <View style={{flexDirection: 'column'}}>
+                  <Text style={styles.text}>{item.part}</Text>
+                  {item.topThree.map((value, index) => 
+                    <Text key={index} style={index === 0 ? styles.textHighlight : styles.text}>{snakeClass[value.snake]} : {value.score}</Text>
+                  )}
+                </View>
               </View>
-            </View>
-          ))}
-
-        </View>
+            ))}
+          </View>
+          {/* conclusion */}
+          <View style={{marginTop: 20,alignItems: 'center',backgroundColor: '#3cb371'}}>
+            <Text style={{fontSize: 25}}>สรุป : {conclusionClass === '' ? 'ไม่สามารถสรุปได้' : conclusionClass}</Text>
+          </View>
+        </ViewShot>
       </ScrollView>
-
-      <View style={{marginTop: 20,alignItems: 'center',backgroundColor: '#3cb371'}}>
-        <Text style={{fontSize: 25}}>สรุป : {conclusionClass === '' ? 'ไม่สามารถสรุปได้' : conclusionClass}</Text>
-      </View>
+      {/* Save & Share */}
+      <SafeAreaView style={styles.container}>
+        <View style={styles.buttonContainer}>
+          <Button 
+            title="save"
+            color="#FF3333"
+            onPress={downloadImage}
+          />
+        </View>
+        <View style={styles.buttonContainer}>
+          <Button 
+            title="share" 
+            color="#3cb371"
+            onPress={shareImage}
+          />
+        </View>
+      </SafeAreaView>
+      {/* back to home */}
       <View style={styles.backButton}>
         <Button title = "กลับไปหน้าแรก" onPress={back}/>
       </View>
@@ -184,8 +240,19 @@ const styles = StyleSheet.create({
     marginTop: 40,
   },
   backButton:{
-    alignItems: 'center',
     marginTop:20,
-    marginBottom:20
+    marginBottom:20,
+    marginLeft:10,
+    marginRight:10
+  },
+  container: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+  },
+  buttonContainer: {
+    flex: 1,
+    marginLeft:10,
+    marginRight:10,
+    marginTop:10
   }
 });
