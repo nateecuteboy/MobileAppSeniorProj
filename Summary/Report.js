@@ -160,7 +160,7 @@ export default function Report(props){
       <ScrollView>
         <ViewShot ref={viewShotRef} options={{ format: "jpg", quality: 0.9 }}>
           <View style={{backgroundColor: '#0000'}}>
-            <Text style={{fontSize: 37,backgroundColor: '#3cb371'}}>Results</Text>
+            <Text style={{fontSize: 32,color : '#fff',fontWeight : 'bold',backgroundColor: 'green'}}>Results</Text>
             {images.map((item, index) => (
               <View key={index} style={styles.padding}>
                 <Image style = {{width: 98,marginLeft: 20}} source={item.uri}/>

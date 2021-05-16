@@ -316,7 +316,7 @@ export default class App extends React.Component {
                     </View> :
                     <View style={styles.cancleButton}>
                       <Button 
-                        title = "Cancle"
+                        title = "Cancel"
                         color="#FF3333"
                         onPress = {this.handleCanclePhoto}
                       />
@@ -343,7 +343,7 @@ export default class App extends React.Component {
                     </View> :
                     <View style={styles.cancleButton}>
                       <Button 
-                        title = "Cancle"
+                        title = "Cancel"
                         color="#FF3333"
                         onPress = {this.handleCanclePhoto1}
                       />
@@ -368,7 +368,7 @@ export default class App extends React.Component {
                     </View> :
                     <View style={styles.cancleButton}>
                       <Button 
-                        title = "Cancle"
+                        title = "Cancel"
                         color="#FF3333"
                         onPress = {this.handleCanclePhoto2}
                       />
@@ -393,7 +393,7 @@ export default class App extends React.Component {
                     </View> :
                     <View style={styles.cancleButton}>
                       <Button 
-                        title = "Cancle"
+                        title = "Cancel"
                         color="#FF3333"
                         onPress = {this.handleCanclePhoto3}
                       />
