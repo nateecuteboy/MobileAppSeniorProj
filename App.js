@@ -37,6 +37,8 @@ export default class App extends React.Component {
     photo2 : null,
     photo3 : null,
     predicted:null,
+    threshold:null,
+    weight:null,
     loading:false,
     imageUrl:{
       'head':null,
@@ -236,9 +238,10 @@ export default class App extends React.Component {
       //upload all photos_url to backend
       try {
         let api = 'https://venomoussnake-303614.et.r.appspot.com/upload';
-        let predicted = await axios.post(api, analyzeImageUrls);
-        predicted = predicted.data;
-        this.setState({...this.state, predicted});
+        let response = await axios.post(api, analyzeImageUrls);
+        this.setState({ predicted:response.data.predicted });
+        this.setState({ threshold:response.data.threshold });
+        this.setState({ weight:response.data.weight });
       } catch (error) {
         this.setState({loading:false});
         console.log(error);
@@ -284,7 +287,7 @@ export default class App extends React.Component {
     const {photo,photo1,photo2,photo3} = this.state;
     return(
       <>
-      {(this.state.predicted === null && !this.state.loading) &&
+      {( (this.state.predicted === null || this.state.threshold === null || this.state.weight === null) && !this.state.loading) &&
         <>
           <Header1/>
             <ScrollView style={styles.scrollView}>
@@ -436,8 +439,14 @@ export default class App extends React.Component {
         </>
       }
       {/* report result */}
-      {this.state.predicted !== null && 
-        <Report data={this.state.predicted} userImage={this.state.imageUrl} back={this.handleBackClicked}/>
+      {this.state.predicted !== null && this.state.threshold !== null && this.state.weight !== null && 
+        <Report 
+          predicted={this.state.predicted}
+          threshold={this.state.threshold}
+          weight={this.state.weight} 
+          userImage={this.state.imageUrl} 
+          back={this.handleBackClicked}
+        />
       }
       </>
     )

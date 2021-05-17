@@ -5,9 +5,6 @@ import { View,
   Button,
   StyleSheet,
   ScrollView,
-  StackNavigator,
-  NavigationContainer,
-  createStackNavigator,
   SafeAreaView,
   Alert
 } from 'react-native';
@@ -18,7 +15,9 @@ import CameraRoll from '@react-native-community/cameraroll';
 export default function Report(props){
  
   const viewShotRef = useRef();
-  const data = props.data;
+  const data = props.predicted;
+  const threshold = props.threshold;
+  const weights = props.weight;
   const userImage = props.userImage;
 
   const snakeClass = {
@@ -37,21 +36,6 @@ export default function Report(props){
     '12':'งูปล้องหวายหัวดำ',
     '13':'งูสามเหลี่ยมหัวแดงหางแดง',
   }
-
-  const weights =  [[2, 1, 1],
-                    [2, 1, 1],
-                    [1, 2, 1],
-                    [1, 1, 2],
-                    [1, 2, 1],
-                    [2, 2, 1],
-                    [2, 1, 1],
-                    [2, 1, 1],
-                    [1, 2, 1],
-                    [2, 1, 2],
-                    [2, 2, 1],
-                    [1, 1, 2],
-                    [1, 2, 1],
-                    [1, 2, 1]]
 
   function getTopThreeScore(data){
     let result = [];
@@ -93,21 +77,21 @@ export default function Report(props){
   images.forEach((data) => {
     let topThree = data.topThree;
     if(data.part !== 'body'){
-      rank1.push({part:parts[data.part], snake:parseInt(topThree[0].snake)});
-      rank2.push({part:parts[data.part], snake:parseInt(topThree[1].snake)});
+      rank1.push({part:parts[data.part], snake:parseInt(topThree[0].snake), score:topThree[0].score});
+      rank2.push({part:parts[data.part], snake:parseInt(topThree[1].snake), score:topThree[1].score});
     }
   })
   //rank1 จะบวกตาม weight ของ f1-score
   rank1.forEach((data) => {
-    if(data.snake in score){
+    if(data.snake in score && data.score > threshold[data.snake][data.part + 1]){ // + 1 เพราะ index 0 เป็นของ body
       score[data.snake] += weights[data.snake][data.part];
-    }else{
+    }else if(data.score > threshold[data.snake][data.part + 1]){
       score[data.snake] = weights[data.snake][data.part];
     }
   })
   //rank2 จะบวก 1 ทุกกรณี เนื่องจากเป็น rank รอง
   rank2.forEach((data) => {
-    if(data.snake in score){
+    if(data.snake in score && data.score > threshold[data.snake][data.part + 1]){
       score[data.snake]++;
     }
   })
@@ -122,10 +106,16 @@ export default function Report(props){
       conclusionClass = conclusionClass + ', ' + snakeClass[key];
     }
   }
-  //special case : head, mid, tail are empty
+  //ถ้าผู้ใช้ไม่ทำการส่งส่วน head, mid, tail มาเลย ส่งมาแต่ส่วน body อย่างเดียว ก็จะใช้ส่วน body แทน 
   if(Object.keys(conclusionClass).length === 0){
     let bodyClass = images.find(item => item.part === 'body');
-    conclusionClass = snakeClass[bodyClass['topThree'][0]['snake']];
+    if(bodyClass['topThree'][0]['score'] > threshold[bodyClass['topThree'][0]['snake']][0]){
+      conclusionClass = snakeClass[bodyClass['topThree'][0]['snake']];
+    }
+  }
+  //ถ้า conclusion class มีมากกว่า 1 class แต่มีค่า score ที่ต่ำ (max = 1) จะทำการ reject เพราะแสดงว่าไม่มีลักษณะเด่นออกมาเลย
+  if(Object.keys(conclusionClass).length > 1 && max === 1){
+    conclusionClass = '';
   }
   
   function back(){
